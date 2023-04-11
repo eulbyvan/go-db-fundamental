@@ -40,17 +40,34 @@ func main() {
 		log.Println("Connected")
 	}
 
-	query := `INSERT INTO customers (customer_id, first_name, last_name) VALUES (:id, :first_name, :last_name)`
+	// fetching all data
+	// rows, err := db.Query("SELECT customer_id, first_name, last_name FROM customers WHERE customer_id < 50")
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	_, err = db.NamedExec(query, map[string]interface{}{
-		"id": 102,
-		"first_name": "Ismail",
-		"last_name": "Ash Shidiq",
-	})
+	// defer rows.Close()
+
+	// for rows.Next() {
+	// 	var customerId, firstName, lastName string
+	// 	if err := rows.Scan(&customerId, &firstName, &lastName); err != nil {
+	// 		log.Fatal(err)
+	// 	}
+
+	// 	fmt.Printf("customer_id: %s\n first_name: %s\n last_name: %s\n", customerId, firstName, lastName)
+	// }
+
+	// fetching one data
+	row := db.QueryRow("SELECT customer_id, first_name, last_name FROM customers WHERE customer_id = $1", 1)
+
+	var customerId, firstName, lastName string
+	err = row.Scan(&customerId, &firstName, &lastName)
 
 	if err != nil {
-		log.Fatalln(err)
-	} else {
-		log.Println("Insert Successful")
+		log.Fatal(err)
 	}
+
+	fmt.Printf("customer_id: %s\n first_name: %s\n last_name: %s\n", customerId, firstName, lastName)
 }
+
+// nama repo: app-mahasiswa-db
