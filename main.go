@@ -39,4 +39,18 @@ func main() {
 	} else {
 		log.Println("Connected")
 	}
+
+	query := `INSERT INTO customers (customer_id, first_name, last_name) VALUES (:id, :first_name, :last_name)`
+
+	_, err = db.NamedExec(query, map[string]interface{}{
+		"id": 102,
+		"first_name": "Ismail",
+		"last_name": "Ash Shidiq",
+	})
+
+	if err != nil {
+		log.Fatalln(err)
+	} else {
+		log.Println("Insert Successful")
+	}
 }
